@@ -3,42 +3,39 @@ package ispy
 import static com.xlson.groovycsv.CsvParser.parseCsv
 
 class ListSpiesController {
+	private final String CSV_FILE_PATH = "C:/cc-maps-data-set.csv"
+	private final String COLUMN_NAMES = "Name,Latitude,Longitude,Age,Gender\n"
 
+	// Index action: renders the index page view.
     def index() {
-    	def spies = []
-
-    	String columnNames = "Name,Latitude,Longitude,Age,Gender\n"
-    	String csv = new File('C:/cc-maps-data-set.csv').getText('UTF-8')
-
-    	csv = columnNames + csv
-
-    	def data = parseCsv(csv)
-
-    	for (line in data){
-    		spies.add(new Spy([name: "$line.Name", latitude: "$line.Latitude", longitude: "$line.Longitude", age: "$line.Age", gender: "$line.Gender"]))
-    	}
-
-
-    	[spies : spies]
+    	[spies : loadSpyInfo()]
     }
 
+    // List action: renders JSON data for all spies. Called via AJAX.
     def list() {
+    	render(contentType: "application/json") {
+    		loadSpyInfo()
+    	}
+    }
+
+    // Load data from the provided CSV file. Create a collection of Spy objects where each object represents a row from the CSV.
+    private def loadSpyInfo() {
+    	// Collection of Spy objects to be populated from CSV
     	def spies = []
 
-    	String columnNames = "Name,Latitude,Longitude,Age,Gender\n"
-    	String csv = new File('C:/cc-maps-data-set.csv').getText('UTF-8')
+    	// Load the CSV file from disk
+    	String csv = new File(CSV_FILE_PATH).getText('UTF-8')
 
-    	csv = columnNames + csv
+    	// GroovyCSV library requires column names as the first row in the CSV file, so append them on.
+    	csv = COLUMN_NAMES << csv
 
+    	// Parse and iterate through the CSV data to create a Spy object from each row. Add them all to the collection.
     	def data = parseCsv(csv)
-
     	for (line in data){
     		spies.add(new Spy([name: "$line.Name", latitude: "$line.Latitude", longitude: "$line.Longitude", age: "$line.Age", gender: "$line.Gender"]))
     	}
 
-    	render(contentType: "application/json") {
-    		spies
-    	}
+    	return spies
     }
 }
 

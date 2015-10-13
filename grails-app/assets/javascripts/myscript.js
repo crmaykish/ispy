@@ -1,5 +1,5 @@
 var geographicalCenter = [39.8282, -98.5795];	// Geographical center of the US
-var startingZoom = 2;
+var startingZoom = 3;
 
 var markers;
 
