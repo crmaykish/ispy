@@ -8,13 +8,6 @@ class ListSpiesController {
 
 	// Index action: renders the index page view.
     def index() {
-
-    	def loc = System.getProperty("user.dir")
-
-    	println loc
-
-    	// println fileLocation
-
     	[spies : loadSpyInfo()]
     }
 
@@ -30,8 +23,12 @@ class ListSpiesController {
     	// Collection of Spy objects to be populated from CSV
     	def spies = []
 
+    	// Assume the file is in the application root directory
+    	// Replace \ with / because Linux filepaths require forward slashes. Windows works with either
+    	// This whole thing should probably be replaced with a properties file anyway
+    	def loc = System.getProperty("user.dir").replace("\\", "/")  << "/" << CSV_FILE_NAME
+
     	// Load the CSV file from disk
-    	def loc = System.getProperty("user.dir")  << "\\" << CSV_FILE_NAME
     	String csv = new File(loc.toString()).getText('UTF-8')
 
     	// GroovyCSV library requires column names as the first row in the CSV file, so append them on.
