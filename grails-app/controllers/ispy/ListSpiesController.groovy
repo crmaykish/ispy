@@ -3,11 +3,18 @@ package ispy
 import static com.xlson.groovycsv.CsvParser.parseCsv
 
 class ListSpiesController {
-	private final String CSV_FILE_PATH = "C:/cc-maps-data-set.csv"
+	private final String CSV_FILE_NAME = "cc-maps-data-set.csv"
 	private final String COLUMN_NAMES = "Name,Latitude,Longitude,Age,Gender\n"
 
 	// Index action: renders the index page view.
     def index() {
+
+    	def loc = System.getProperty("user.dir")
+
+    	println loc
+
+    	// println fileLocation
+
     	[spies : loadSpyInfo()]
     }
 
@@ -24,7 +31,8 @@ class ListSpiesController {
     	def spies = []
 
     	// Load the CSV file from disk
-    	String csv = new File(CSV_FILE_PATH).getText('UTF-8')
+    	def loc = System.getProperty("user.dir")  << "\\" << CSV_FILE_NAME
+    	String csv = new File(loc.toString()).getText('UTF-8')
 
     	// GroovyCSV library requires column names as the first row in the CSV file, so append them on.
     	csv = COLUMN_NAMES << csv
