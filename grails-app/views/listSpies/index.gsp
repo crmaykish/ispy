@@ -21,6 +21,9 @@
 				<div class="col-md-12">
 					<div id="map"></div>
 				</div>
+				<div class="col-xs-2">
+					<input type="numnber" id="maxAge" class="form-control" placeholder="Max Age">
+				</div>
 			</div>
 
 			<div class="row">
@@ -36,6 +39,7 @@
 
 					<p>Click on a pin to show the complete details of the agent at that location.
 					
+					<p>Enter a number in the Max Age box to filter results by age.
 				</div>
 			</div>
 		</div>
